@@ -8,7 +8,12 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DckStringUtil {
+/**
+ * <b>Dck Util String</b><br/>
+ * @author jshasus
+ *
+ */
+public class Dus {
 	
 	/**
 	 * 
@@ -142,10 +147,10 @@ public class DckStringUtil {
 	 * @param secondValue
 	 * @return
 	 */
-	public static final String selectJosa(String word, String withBatchim, String withoutBatchim) throws Exc_Cu {
+	public static final String selectJosa(String word, String withBatchim, String withoutBatchim) throws Exc_Dck {
 		char lastCharacter = word.charAt(word.length() - 1); // 한글의 제일 처음과 끝의 범위밖일 경우는 오류
 		if (lastCharacter < 0xAC00 || lastCharacter > 0xD7A3) {  
-			throw new Exc_Cu("마지막 글자가 한글이 아님");
+			throw new Exc_Dck("마지막 글자가 한글이 아님");
 		} 
 		String seletedValue = (lastCharacter - 0xAC00) % 28 > 0 ? withBatchim : withoutBatchim; 
 		return word+seletedValue; 
@@ -184,44 +189,6 @@ public class DckStringUtil {
 	}
 	
 	
-	
-	/**
-	 * print Repeat
-	 * @param s
-	 */
-	public static void printr(String s, int num) { 
-		for(int i=0; i<num ; i ++) { 
-			System.out.print(s);
-		}
-	}
-	
-	
-	/**
-	 * 
-	 * @param i : 대기 시간(초)
-	 */
-	public static void wait(String strName, int i) {
-		for(int j=0 ; j<i ; j++ ) {
-			System.out.println(strName + " Waiting... "+j+" / " + i +" sec");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	
-	
-	/**
-	 * 
-	 * @param str
-	 */
-	public static void noticeLine(String str) {
-		System.out.println("--------------------------- "+str+" --------------------------- ");
-	}
-	
-
 	/**
 	 * 
 	 * *170602 trim 포함 
@@ -261,114 +228,6 @@ public class DckStringUtil {
 	}
 	
 
-	
-	/**
-	 * printList(arr) 의 약어 메서드
-	 * 
-	 * 
-	 * 170714
-	 * @param arr
-	 */
-	public static void printArr(Object[] arr) { 
-		printList(arr);
-	}
-	
-	
-
-
-	
-
-	public static void printLine() {
-		System.out.println("-------------------------------------------------------------");
-	}
-
-	public static void printTitle(String string) {
-		System.out.println("------------------- "+string + " --------------");
-	}
-
-	
-
-	public static void p(Object o) {
-		System.out.println(o);
-	}
-
-	
-
-	/**
-	 * print AND print count
-	 * @param o
-	 */
-	public static void pNc(Object o) { 
-		Integer i = tl_pcnt.get();
-		i = Cu.nvl(i, 0);
-		i++;
-		
-		p("-----------------" + i + " " + o);
-		
-		tl_pcnt.set(i);
-	}
-	
-
-	
-	/**
-	 * 리스트를 프린트.
-	 * 
-	 * List<Object> 로 간주
-	 * @param lst
-	 */
-	public static void printList(Collection lst) { 
-		if(lst == null) {
-			System.out.println("list null");;
-			return;
-		}
-		System.out.println("[[ 리스트 출력 - size : " + lst.size());
-		int cnt =0 ; 
-		for(Object o : lst) { 
-			if(o==null ) { 
-				System.out.println(cnt + "(NULL)");
-			} else {
-				System.out.println(cnt + " " + o.toString());
-			}
-			
-			cnt++;
-		}
-		System.out.println("// 리스트 종료");
-	}
-	
-	
-
-	public static void printList(Object[] arr) {
-		System.out.println("[[ 리스트 출력 - size : " + arr.length);
-		
-		int cnt =0 ; 
-		for(Object o : arr) {
-			if(o==null ) { 
-				System.out.println(cnt + " " +"(NULL)");
-			} else {
-				System.out.println(cnt + " " +o.toString());
-			}
-			cnt++;
-		}
-		System.out.println("//");
-	}
-	
-
-
-	
-	public static String getTitleWithLine(String title) { 
-		return "---------------- " + title + " --------------\r\n";
-	}
-	
-	/**
-	 * 별 구분선출력 ********************
-	 * @return
-	 */
-	public static String getDivisionLine() {
-		return "\r\n******************************************************************\r\n";
-	}
-	
-	
-	
 	/**
 	 * 티스토리 주소 정규화
 	 * 
@@ -468,7 +327,7 @@ public class DckStringUtil {
 	 * @return
 	 */
 	public static String toHtml(String s) {
-		return Cu.textToProperHtml(s);
+		return textToProperHtml(s);
 	}
 	
 
@@ -524,11 +383,11 @@ public class DckStringUtil {
 		if(s == null)  return null;
 		
 		if(s.length() >= 2 && s.substring(s.length()-2, s.length()).equals("\r\n") == true) {  
-			return Cu.substr(s, s.length()-2); 
+			return substr(s, s.length()-2); 
 		}
 		
 		if(s.length() >= 1 &&  s.substring(s.length()-1, s.length()).equals("\n") == true) {  
-			return Cu.substr(s, s.length()-1);
+			return substr(s, s.length()-1);
 		}
 		
 		return s;
@@ -644,19 +503,6 @@ public class DckStringUtil {
 
 
 	/**
-	 * 한글 패턴 
-	 *  @param t = false 일때 '한글아님'
-	 * ;; 참고 : ScrInterpreter
-	 * spChar
-	 * @return
-	 */
-	public static String patHan(boolean t) {
-		return Pat.han(t);
-	}
-
-
-
-	/**
 	 * StrArr 받아서 모두 or 조건 (가|나|다|...)
 	 * @param josa
 	 * @return
@@ -681,7 +527,7 @@ public class DckStringUtil {
 	 * 조사 모음
 	 * 
 	 * @param batchim true => 받침있을때 쓰는 조사 + 받침 무관한 조사 반환
-	 *  false => ... 
+	 *  false => 받침 없을때 쓰는 조사 + 받침 무관한 조사 반환
 	 * @return
 	 */
 	public static String[] josa(boolean batchim) {
@@ -689,32 +535,16 @@ public class DckStringUtil {
 		String[] asBatchim_notCare = "께서 에서 서 의 에 에게 께 한테 에게서 에서부터 보다 로 로서 로써 같이 처럼 도 로부터 부터 까지 마저 조차".split(" ");
 
 		if(batchim == true) { // 받침 O
-			return Cu.addAs(asBatchim_notCare, "이 을 으로 으로서 으로써 이라고 이여 이시여 아 과 이며 이랑 은 으로부터 이란 이든지 이나마 이야말로".split(" ")) ;
+			return addAs(asBatchim_notCare, "이 을 으로 으로서 으로써 이라고 이여 이시여 아 과 이며 이랑 은 으로부터 이란 이든지 이나마 이야말로".split(" ")) ;
 		} else { // 받침 X
-			return Cu.addAs(asBatchim_notCare, "가 를 라고 여 시여 야 와 며 랑 는 란 든지 나마 야말로".split(" ")) ;
+			return addAs(asBatchim_notCare, "가 를 라고 여 시여 야 와 며 랑 는 란 든지 나마 야말로".split(" ")) ;
 		}
 
 	}
 
-	
-
-	/**
-	 * http://주소:포트/컨텍스트 
-	 * 
-	 * ;; 뒤에 / 붙여서 사용할것
-	 * @param req
-	 * @return
-	 */
-	public static String getBasicRequestUrl(HttpServletRequest req) {
-		return "http" + "://"+req.getServerName() + ":"
-				+ req.getServerPort()
-				+ (req.getContextPath() != null ? req.getContextPath() : "");
-	}
-	
-
 
 	/** 가운뎃점 */
-	public static char char_midDot() {
+	public static char ch_midDot() {
 		return '·';
 	}
 	
@@ -809,5 +639,75 @@ public class DckStringUtil {
 	}
 	
 	
+	
 
+	/**
+	 * 파일이름에서 확장자 지우기
+	 * abcdef.ext 에서 abcdef 를 분리
+	 * 
+	 * 정규식으로 확장자만 떼느거라 경로 있는 경우에 대해 고려 불가 
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public static String getNameFromFileName(String fileName) {
+		Pattern p  = Pattern.compile("(.*)(?:\\.(.*))");
+		
+		Matcher m = p.matcher(fileName);
+		if(m.matches() == false) { 
+			return null;
+		}
+		
+		return m.group(1);
+	}
+	
+	
+	/**
+	 * 파일이름에서 확장자만 가져오기
+	 *  abcdef.ext 에서 ext 를 분리
+	 * 
+	 * 정규식으로 확장자만 떼느거라 경로 있는 경우에 대해 고려 불가 
+	 * @param fileName
+	 * @return
+	 */
+	public static String getExtFromFileName(String fileName) {
+		Pattern p  = Pattern.compile("(.*)(?:\\.(.*))");
+		
+		Matcher m = p.matcher(fileName);
+		if(m.matches() == false) { 
+			return null;
+		}
+		
+		return m.group(2);
+	}
+
+
+	// 190423
+
+	/**
+	 * mysql 에  4byte 문자 로 오류 나는 경우 사용
+	 * 
+	 * t 2-3
+	 * 
+	 * https://stackoverflow.com/questions/24840667/what-is-the-regex-to-extract-all-the-emojis-from-a-string
+	 * 
+	 * @param input
+	 * @return
+	 */
+	public static String mysqlSafe(String input) {
+		if (input == null) return null;
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < input.length(); i++) {
+			if (i < (input.length() - 1)) { // Emojis are two characters long in java, e.g. a rocket emoji is "\uD83D\uDE80";
+				if (Character.isSurrogatePair(input.charAt(i), input.charAt(i + 1))) {
+					i += 1; //also skip the second character of the emoji
+					continue;
+				}
+			}
+			sb.append(input.charAt(i));
+		}
+
+		return sb.toString();
+	}
 }

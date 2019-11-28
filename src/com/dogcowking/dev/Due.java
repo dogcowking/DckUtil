@@ -47,14 +47,7 @@ package com.dogcowking.dev;
 	 * ;; 기존 Cu + CommonUtil 합치고, cidog 관련 메서드는 모두 삭제한 버전
 	 * - 190307
 	 */
-	public class Cu {
-		
-	
-	
-		
-		
-	
-
+	public class Due {
 		
 		
 		/**
@@ -68,55 +61,6 @@ package com.dogcowking.dev;
 		}
 	
 
-		/**
-		 * 
-		 * @param lstAo
-		 */
-		public static void printList_sqlResult(List<Object[]> lstAo) {
-			LogUtil.infoLine();
-			LogUtil.info("size : " + lstAo.size());
-			for(Object o : lstAo) {
-				Object[] ao = (Object[])o;
-				for(Object o2 : ao) {
-					if(o2==null ) { 
-						System.out.print("(NULL)");
-					} else {
-						System.out.print(o2.toString());
-					}
-					System.out.println(" ");
-				}
-				System.out.println("");
-			}
-			LogUtil.infoLine();
-		}
-		
-		/**
-		 * 
-		 * @param lstAo
-		 */
-		public static String toString_sqlResult(List<Object[]> lstAo) {
-			LogUtil.infoLine();
-			StringBuilder sb= new StringBuilder();
-			sb.append("-----------------------------------------------\r\n");
-
-			LogUtil.info("size : " + lstAo.size());
-			for(Object o : lstAo) {
-				Object[] ao = (Object[])o;
-				for(Object o2 : ao) {
-					if(o2==null ) { 
-						sb.append("(NULL)");
-					} else {
-						sb.append(o2.toString());
-					}
-					sb.append(" ");
-				}
-				sb.append("\r\n");
-			}
-			sb.append("-----------------------------------------------\r\n");
-
-			return sb.toString();
-		}
-		
 		
 		/**
 		 * URL 에서 oid=XX 추출하기
@@ -192,15 +136,6 @@ package com.dogcowking.dev;
 			return as;
 		}
 		
-	
-
-		
-	
-		
-
-	
-		
-
 		
 		
 		/**
@@ -239,33 +174,6 @@ package com.dogcowking.dev;
 //			 }
 //		}
 		
-		
-		
-
-
-		
-
-	
-
-		
-		
-		static ThreadLocal<Integer > tl_pcnt = new ThreadLocal<Integer>();
-		
-		
-		/**
-		 * print count
-		 */
-		public static void pcnt() {
-			Integer i = tl_pcnt.get();
-			i = Cu.nvl(i, 0);
-			i++;
-			
-			p("// COUNT " + i);
-			
-			tl_pcnt.set(i);
-			
-		}
-		
 
 
 		public static void t_chkRegEx(String sPat, String s) {
@@ -301,17 +209,6 @@ package com.dogcowking.dev;
 		}
 
 
-	
-
-
-
-
-		public static void wait(String string) {
-			wait(string, 3);
-		}
-
-
-	
 		
 
 
@@ -413,121 +310,5 @@ package com.dogcowking.dev;
 			fos.close();
 		}
 
-
-
-	
-
-
-
-
-		public static void map() {
-			// TODO Auto-generated method stub
-
-		}
-
-
-//		/**
-//		 * 만든거 안까먹으려면 여기에 넣어줘야 지 
-//		 * 
-//		 * ;;180818
-//		 */
-//		public static ListMap listMap() {
-//			return new ListMap();
-//		}
-
-
-
-		/**
-		 * 파일이름에서 확장자 지우기
-		 * abcdef.ext 에서 abcdef 를 분리
-		 * 
-		 * 정규식으로 확장자만 떼느거라 경로 있는 경우에 대해 고려 불가 
-		 * 
-		 * @param fileName
-		 * @return
-		 */
-		public static String getNameFromFileName(String fileName) {
-			Pattern p  = Pattern.compile("(.*)(?:\\.(.*))");
-			
-			Matcher m = p.matcher(fileName);
-			if(m.matches() == false) { 
-				return null;
-			}
-			
-			return m.group(1);
-		}
-		
-		
-		/**
-		 * 파일이름에서 확장자만 가져오기
-		 *  abcdef.ext 에서 ext 를 분리
-		 * 
-		 * 정규식으로 확장자만 떼느거라 경로 있는 경우에 대해 고려 불가 
-		 * @param fileName
-		 * @return
-		 */
-		public static String getExtFromFileName(String fileName) {
-			Pattern p  = Pattern.compile("(.*)(?:\\.(.*))");
-			
-			Matcher m = p.matcher(fileName);
-			if(m.matches() == false) { 
-				return null;
-			}
-			
-			return m.group(2);
-		}
-
-		
-		/**
-		 * 
-
-		출처: https://nine01223.tistory.com/302 [스프링연구소(spring-lab)]
-		 * @param request
-		 * @return
-		 */
-		public static String getClientIpAddr(HttpServletRequest request) {
-		    String ip = request.getHeader("X-Forwarded-For");
-		 
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("Proxy-Client-IP");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("WL-Proxy-Client-IP");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("HTTP_CLIENT_IP");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-		    }
-		    if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-		        ip = request.getRemoteAddr();
-		    }
-		 
-		    return ip;
-		}
-		
-		
-		
-		
-		
-
-		/**
-		 * paramStr() 을 호출하여 파람이 있다면 &a=1&b=1 형태로 호출..
-		 * 파람이 없다면 "" 만 호출
-		 * 
-		 * 다른 파람에 덧붙일때 사용하기 위함
-		 * @param objects
-		 * @return
-		 */
-		public static String paramStr_withAmp(Object... objects) { 
-			String r = paramStr(objects);
-			if(r.equals("")) {
-				return "";
-			} else {
-				return "&"+paramStr(objects);
-			}
-		}
-		
 	}
 }

@@ -12,10 +12,23 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DckDateUtil {
+
+/**
+ * <b>Dck Util Date</b><br/>
+ * 
+ * 
+ * s : String 클래스<br/>
+ * d : Date 클래스<br/>
+ * ts : Timestamp<br/>
+ * a, arr : array<br/>
+ * 
+ * @author jshasus
+ *
+ */
+public class Dud {
 	
 	/** 날짜 패턴 (정규표현식으로 변환은 아님) */
-	public static String[] sArrPatDate = { 
+	public static String[] asPatDate = { 
 			"yy/MM/dd HH:mm"
 			,"yyyyMMdd"
 			,"yyyy-MM-dd HH:mm"
@@ -31,10 +44,6 @@ public class DckDateUtil {
 			,"yyyy.MM.dd (오전|오후) hh:mm" // 네이버 뉴스 일부 http://sports.news.naver.com/kbaseball/news/read.nhn?oid=410&aid=0000359054
 			,"yyyy-MM-dd" //170329 //test10-20-1
 	}; // 인용 가능한 패턴 모음
-	
-	
-
-	
 	
 	
 	/**
@@ -68,7 +77,7 @@ public class DckDateUtil {
 		
 
 		// 1. 긴 패턴부터 적용하기 위한 정렬 ( 짧은 패턴이 긴 패턴에 포함되는 경우 있으므로...)
-		List<String> lst = new ArrayList<String>(Arrays.asList(sArrPatDate));
+		List<String> lst = new ArrayList<String>(Arrays.asList(asPatDate));
 		Collections.sort(lst, new Comparator<String>() {
 
 			@Override
@@ -146,7 +155,7 @@ public class DckDateUtil {
 		str = str.replace("PM","오후");
 		
 		// 1. 긴 패턴부터 적용하기 위한 정렬 ( 짧은 패턴이 긴 패턴에 포함되는 경우 있으므로...)
-		List<String> lst = new ArrayList<String>(Arrays.asList(sArrPatDate));
+		List<String> lst = new ArrayList<String>(Arrays.asList(asPatDate));
 		Collections.sort(lst, new Comparator<String>() {
 
 			@Override
@@ -168,7 +177,6 @@ public class DckDateUtil {
 			if(m == false) {
 				continue;
 			}
-			
 //			System.out.println("[stringToDate] datePat : " + sPat);
 //			System.out.println("[stringToDate] matched regex : " + sDatePattern_regex);
 			
@@ -371,37 +379,37 @@ public class DckDateUtil {
 	 * ;; t-8-16
 	 * 
 	 * 
-	 * @param tmp
+	 * @param sDateRange
 	 * @return
 	 */
-	public static String[] parseDateRange(String tmp) {
+	public static String[] parseDateRange(String sDateRange) {
 		String sPastDate = null;
 		String sFutureDate = null;
 
-		if (tmp != null) {
+		if (sDateRange != null) {
 			Pattern p = Pattern.compile("(\\d*)~(\\d*)");
-			Matcher m = p.matcher(tmp);
+			Matcher m = p.matcher(sDateRange);
 			if(m.matches() == true) {
 				sPastDate = m.group(1);
 				sFutureDate = m.group(2);
-				return new String[] { Cu.noStrToNull(sPastDate),
-						Cu.noStrToNull(sFutureDate) };
+				return new String[] { Dck.s.noStrToNull(sPastDate),
+						Dck.s.noStrToNull(sFutureDate) };
 			}
 			
 			// 2 날짜가 1개만 나온 경우
 			// ex : 171229 => 171229~171229와 동일
 			p = Pattern.compile("(\\d*)");
-			m = p.matcher(tmp);
+			m = p.matcher(sDateRange);
 			if(m.matches() == true) {
 				sPastDate = m.group(1);
-				return new String[] { Cu.noStrToNull(sPastDate),
-						Cu.noStrToNull(sPastDate) };
+				return new String[] { Dck.s.noStrToNull(sPastDate),
+						Dck.s.noStrToNull(sPastDate) };
 			}
 	
 		}
 
-		return new String[] { Cu.noStrToNull(sPastDate),
-				Cu.noStrToNull(sFutureDate) };
+		return new String[] { Dck.s.noStrToNull(sPastDate),
+				Dck.s.noStrToNull(sFutureDate) };
 	}
 
 	
@@ -420,17 +428,18 @@ public class DckDateUtil {
 	 */
 	public static String scrDate(Date bDate, Date eDate) {
 		String s="";
-		s+=(bDate==null?"":Cu.dateToYymmdd(bDate));
+		s+=(bDate==null?"":dateToYymmdd(bDate));
 		s+="~";
-		s+=(eDate==null?"":Cu.dateToYymmdd(eDate));
+		s+=(eDate==null?"":dateToYymmdd(eDate));
 		return s;
 	}
 	
 
 
-	public static String nowTimeStamp() {
-		return Cu.dateToStrDatestamp(new Date());
-	}
+	// 이거 어디감?
+//	public static String nowTimeStamp() {
+//		return dateToStrDatestamp(new Date());
+//	}
 
 
 	/**
@@ -482,7 +491,7 @@ public class DckDateUtil {
 	 * @return
 	 */
 	public static String timestamp() {
-		return Cu.dateToString(new Date());
+		return dateToString(new Date());
 	}
 	
 
@@ -531,7 +540,7 @@ public class DckDateUtil {
 	
 
 	public static int lastDayOfMonth(String yearMonth) throws Exc_Dck {
-		Date d = Cu.toDate(yearMonth+"01");
+		Date d = toDate(yearMonth+"01");
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
 		return c.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -549,13 +558,13 @@ public class DckDateUtil {
 	 * @throws Exc_Dck 
 	 */
 	public static String addDay(String sDt, int i) throws Exc_Dck {
-		return Cu.dateToYymmdd_2(Cu.addDay(Cu.toDate(sDt), i));
+		return dateToYymmdd_2(addDay(toDate(sDt), i));
 	}
 
 	
 
 	public static String toYymmdd(Date d) {
-		return Cu.dateToYymmdd_2(d);
+		return dateToYymmdd_2(d);
 	}
 
 
@@ -626,7 +635,7 @@ public class DckDateUtil {
 	
 
 	public static String date6ToDate8(String date6) throws Exc_Dck {
-		return Cu.to8digit(Cu.toDate(date6));
+		return to8digit(toDate(date6));
 	}	
 	
 
@@ -641,7 +650,7 @@ public class DckDateUtil {
 	 * 171225
 	 * @param d
 	 */
-	public static Date toTomorrow(Date d) {
+	public static Date tomorrowZeroHour(Date d) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
 		c.set(Calendar.HOUR_OF_DAY, 0);
@@ -682,60 +691,27 @@ public class DckDateUtil {
 	 * @param d 
 	 * @return
 	 */
-	public static String dateToStr_mm(Date d) {
+	public static String toStr_mm(Date d) {
 		if(d == null ) return null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd HH:mm");
 		return sdf.format(d);
 	}
 
 
-
-
-	// 190423
-
 	/**
-	 * mysql 에  4byte 문자 로 오류 나는 경우 사용
-	 * 
-	 * t 2-3
-	 * 
-	 * https://stackoverflow.com/questions/24840667/what-is-the-regex-to-extract-all-the-emojis-from-a-string
-	 * 
-	 * @param input
-	 * @return
-	 */
-	public static String mysqlSafe(String input) {
-		  if (input == null) return null;
-		    StringBuilder sb = new StringBuilder();
-
-		    for (int i = 0; i < input.length(); i++) {
-		      if (i < (input.length() - 1)) { // Emojis are two characters long in java, e.g. a rocket emoji is "\uD83D\uDE80";
-		        if (Character.isSurrogatePair(input.charAt(i), input.charAt(i + 1))) {
-		          i += 1; //also skip the second character of the emoji
-		          continue;
-		        }
-		      }
-		      sb.append(input.charAt(i));
-		    }
-
-		  return sb.toString();
-		}
-	
-
-	/**
-	 * 오늘 작성 : 시:분만 표시
-	 * 그 이전 : 190101 11:22
 	 * 
 	 * t 502-3
-	 * @param d
+	 * @param 오늘 작성 : 시:분만 표시<br/>
+	 * 그 이전 : 190101 11:22
 	 * @return
 	 */
-	public  static String dateForBbs(Date d) {
+	public  static String toStr_bbs(Date d) {
 		Date dNow = new Date();
 		
 		SimpleDateFormat sdfNow = new SimpleDateFormat("YYMMDD");
 		String s1 = sdfNow.format(dNow);
 		
-		SimpleDateFormat sd = new SimpleDateFormat("YYMMDD");
+//		SimpleDateFormat sd = new SimpleDateFormat("YYMMDD");
 		String s2 = sdfNow.format(d);
 		
 		if(s1.equals(s2)) {
@@ -748,14 +724,12 @@ public class DckDateUtil {
 
 	
 	/**
-	 * 몇초전, 몇시간전 , 몇년전 .. .
-	 * 
 	 * t 502-3
 	 * 
 	 * @param date
-	 * @return
+	 * @return 몇초전, 몇시간전 , 몇년전 .. .
 	 */
-	public static String dateBeforeTime(Date date) { 
+	public static String toStr_bbs_2(Date date) { 
 		final int SEC = 60;
 		final int MIN = 60;
 		final int HOUR = 24;

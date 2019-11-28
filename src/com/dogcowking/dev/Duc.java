@@ -14,7 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class DckCommonUtil {
+
+/**
+ * Dck Util - Common
+ * @author jshasus
+ *
+ */
+public class Duc {
 
 	/**
 	 * 주어진 맵에, key를 이용하여 i 만큼 증가시킴
@@ -220,7 +226,7 @@ public class DckCommonUtil {
 	 * @param val
 	 * @throws ImpossibleException 
 	 */
-	public static void put2map(Map m, String key, Object val) throws Exc_Cu { 
+	public static void put2map(Map m, String key, Object val) throws Exc_Dck { 
 		Object o = m.get(key);
 		if(o==null) { 
 			m.put(key, val);
@@ -232,7 +238,7 @@ public class DckCommonUtil {
 		}  else if(o!=null && o.getClass() == ArrayList.class) {
 			((List)o).add(val);
 		} else {
-			throw new Exc_Cu("맵의 val 이 null 도, 기존객체도, 리스트도 아닌 경우");
+			throw new Exc_Dck("맵의 val 이 null 도, 기존객체도, 리스트도 아닌 경우");
 		}
 	}
 	
@@ -276,7 +282,7 @@ public class DckCommonUtil {
 	 * @return
 	 */
 	public static List minus(List lst, List lst2) {
-		List lst3 = Cu.clone(lst);
+		List lst3 = Dck.clone(lst);
 		lst3.removeAll(lst2);
 		return lst3;
 	}
@@ -805,20 +811,6 @@ public class DckCommonUtil {
 		}
 	}
 
-
-	/**
-	 * 
-	 * ;; 180326
-	 * @param m
-	 */
-	public static void printMap(Map m) {
-		for(Object o : m.entrySet()) {
-			Cu.p(o);
-		}
-	}
-
-
-
 	/**
 	 * 숫자 나열된 str 을 배열로 변경
 	 *  ex : 1,2 ,3 ,4
@@ -909,110 +901,6 @@ public class DckCommonUtil {
 	}
 	
 
-
-	/**
-	 * ;; URL 파라메터 넣어주면 URL 파라메터 String 으로 만들고,
-	 * - null 인건 빼줌.
-	 * - 복수 파람 처리 (ex : a=1 & a=2
-	 * 
-	 * ;; 한글, 특문은 URL 인코딩 됨
-	 * 
-	 * [짝수(0부터)] param Key 
-	 * [홀수] param value
-	 * 
-	 * ;; t 2-44
-	 * 
-	 * ;; paramOne() 과 연결됨
-	 * 
-	 * param value null 이면 해당 파람은 빠짐 
-	 * 
-	 * @param objects
-	 * @return
-	 */
-	public static String paramStr(Object... objects) {
-		String r ="";
-		
-		boolean moreThanOne = false;
-		
-		for(int i=0; i<objects.length ; i+=2) {
-			if(objects[i+1] == null ) continue;
-
-
-			// 파라메터 값이 배열인경우 
-			if(objects[i+1].getClass().isArray() == true) {
-				Object[] values = (Object[]) objects[i+1];
-				
-				for(Object oVal : values) {
-					if(moreThanOne == true) { 
-						r+= "&";
-					}
-					r+=paramOne((String)objects[i], oVal);
-					moreThanOne = true;
-				}
-				
-			} else { // 일반적인 파람 값 1개 인 경우
-				if(moreThanOne == true) { 
-					r+= "&";
-				}
-				r += paramOne((String)objects[i], objects[i+1]);
-				moreThanOne = true;
-			}
-		}
-
-		
-		
-		return r;
-	}
-	
-	
-	/**
-	 * 
-	 * @param sKey
-	 * @param bValue
-	 * @return
-	 */
-	public static String paramOne(String sKey, Object bValue) {
-		String r="";
-		r+= sKey + "=";
-		
-		if(bValue.getClass()  == String.class) { // str 인경우 인코딩
-			
-			try {
-				r += URLEncoder.encode((String)bValue , "UTF-8");
-			} catch (UnsupportedEncodingException e) { // 나올리가.
-				r +="encodeErr";
-			}
-			
-		} else { // 다른 클래스는 toString 알아서 되게
-			r+= bValue;
-		}
-		
-		return r;
-	}
-
-
-	/**
-	 * 1개 key 에 복수 value 들어가는 경우 를 위해
-	 * ex : cipId =[1,2,3,4] 면
-	 * [cipId,1,cipId,2,cipId,3,cipId,4] 배열 만들어줌 
-	 * 
-	 * 
-	 * ;; t 2-46
-	 * @param sKey
-	 * @param Ids
-	 * @return
-	 */
-	public static Object[] paramMultiToAo(String sKey, Object[] values) {
-		Object[] arr =new Object[values.length * 2];
-		
-		for(int i=0; i<values.length ; i+=2) {
-			arr[i] = sKey;
-			arr[i+1] = values[(i-1)/2];
-		}
-		
-		return arr;
-	}
-	
 
 	/**
 	 * 입력 배열중 null 아닌 의 갯수를 반환
