@@ -61,8 +61,6 @@ public class Dud {
 	 * * 주의 stringToDate 와 달리 "추출"에 의의가 있음. 
 	 * *170311 정렬해놓고 안쓰던 오류 수정
 	 * 
-	 * test  5-38
-	 * 
 	 * 날짜 문자열이 섞여 있는 것에서 날짜 문자열만 추출
 	 * ex ) 딤딤이 161210 --> 161210   
 	 * @param str
@@ -86,11 +84,7 @@ public class Dud {
 			}
 		});
 		
-		System.out.println("[extractDateString] targetStr : " + str);
-		
 		for(String sPat : lst) {
-//			LogUtil.infoLine();
-//			LogUtil.info(sPat);
 
 			// 2. 각 패턴 규칙 맞는지 확인
 			String sDatePattern_regex = sPat.replaceAll("y","\\\\d").replaceAll("MM|dd|hh|HH|mm|ss","\\\\d\\\\d?");
@@ -99,17 +93,12 @@ public class Dud {
 			boolean m = mat.find();
 			String extractedString = null;
 			
-//			LogUtil.info(sDatePattern_regex + " : " +m);
 			if(m == false) {
 				continue;
 			}
 			
 			extractedString = mat.group();
 			
-//			System.out.println("[extractDateString] datePat : " + sPat);
-//			System.out.println("[extractDateString] matched regex : " + sDatePattern_regex);
-//			System.out.println("[extractDateString] extractedString : " + extractedString);
-				
 			// 3. 추출된 문자열로 실제로 Date() 생성 테스트 후 반환
 			String sDatePat = sPat.replace("(오전|오후)","a");
 			SimpleDateFormat sdf = new SimpleDateFormat(sDatePat);
