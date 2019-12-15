@@ -81,6 +81,7 @@ public class Test_2_1_DckDateCompare {
 		
 		// 1 // Dud
 		s = Dud.toStr_bbs(d);
+		
 		Dup.ln(s);
 		
 		// 2 // 일반
@@ -89,14 +90,13 @@ public class Test_2_1_DckDateCompare {
 		SimpleDateFormat sdfNow = new SimpleDateFormat("YYMMDD");
 		String s1 = sdfNow.format(dNow);
 		String s2 = sdfNow.format(d);
-		
 		if(s1.equals(s2)) {
 			s = new SimpleDateFormat("HH:mm").format(d);
 		}  else {
 			s = new SimpleDateFormat("yyMMdd HH:mm").format(d);
 		}
 		
-		Dup.ln(s);;
+		Dup.ln(s);
 		
 		
 		// 3 // Joda time
