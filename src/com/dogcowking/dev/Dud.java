@@ -206,15 +206,13 @@ public class Dud {
 		}
 		
 		// 4. 아무것도 찾지 못했다면 Exception 으로 반환함.
-		throw new  Exc_Dck("not found acceptable Date String In paramter string. '"+str+"'");
+		throw new  Exc_Dck("주어진 문자열과 맞는 날짜 패턴을 찾지 못함. '"+str+"'");
 		
 	}
 
 	
 	/**
 	 * * extractDateString() 과 연계해서 쓰일 때가 있어 둘 간의 패턴 맞춰야..
-	 * test  5-36, 5-38
-	 * 
 	 * 
 	 * *161210 생성
 	 * * SimpleDateFormat 은 잘못된 패턴도 변환해버리므로 이를 해결 위해 Pattern Matcher 이용함
@@ -271,7 +269,7 @@ public class Dud {
 			}
 		}
 		
-		throw new  Exc_Dck("not found acceptable Date pattern. - '" + str + "'");
+		throw new  Exc_Dck("주어진 문자열과 맞는 날짜 패턴을 찾지 못함. - '" + str + "'");
 	}
 	
 	
@@ -536,7 +534,7 @@ public class Dud {
 	 * @param eDate 종료날짜
 	 * @return EX : 191215~191220 
 	 */
-	public static String scrDate(Date bDate, Date eDate) {
+	public static String toStr(Date bDate, Date eDate) {
 		String s="";
 		s+=(bDate==null?"":toStr_yyMMdd(bDate));
 		s+="~";
@@ -557,7 +555,7 @@ public class Dud {
 	}
 	
 
-	public static int lastDayOfMonth(String yearMonth) throws Exc_Dck {
+	public static int getLastDayOfMonth(String yearMonth) throws Exc_Dck {
 		Date d = toDate(yearMonth+"01");
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
@@ -582,13 +580,13 @@ public class Dud {
 
 	
 
-	public static String toYymmdd(Date d) {
+	public static String toStr_yymmdd(Date d) {
 		return toStr_yymmdd_2(d);
 	}
 
 
-	public static String toYymmdd() {
-		return toYymmdd(new Date());
+	public static String toStr_yymmdd() {
+		return toStr_yymmdd(new Date());
 	}
 	
 	/**
@@ -596,7 +594,7 @@ public class Dud {
 	 * @param d
 	 * @return
 	 */
-	public static String toYyyymm(Date d) {
+	public static String toStr_yyyyMM(Date d) {
 		if(d==null) {
 			return null;
 		}
@@ -605,7 +603,7 @@ public class Dud {
 	}
 
 
-	public static String to8digit(Date d) {
+	public static String toStr_yyyyMMdd(Date d) {
 		if(d==null) {
 			return null;
 		}
@@ -639,7 +637,7 @@ public class Dud {
 	
 
 	public static String date6ToDate8(String date6) throws Exc_Dck {
-		return to8digit(toDate(date6));
+		return toStr_yyyyMMdd(toDate(date6));
 	}	
 	
 
@@ -647,14 +645,14 @@ public class Dud {
 	/**
 	 * d 의 다음날을 반환함.
 	 * 이때 d가 00시 가 아니더라도 00시로 간주한 다음날을 반환함
-	 * (즉 해당일의 24시 시점을 반환)
+	 * (즉 해당일의 24:00 시점을 반환)
 	 * 
 	 * t 2-59
 	 * 
 	 * 171225
 	 * @param d
 	 */
-	public static Date tomorrowZeroHour(Date d) {
+	public static Date setAsTomorrowZeroHour(Date d) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
 		c.set(Calendar.HOUR_OF_DAY, 0);
@@ -676,7 +674,7 @@ public class Dud {
 	 * @param d
 	 * @return
 	 */
-	public static Date zeroHour(Date d) {
+	public static Date setAsZeroHour(Date d) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
 		c.set(Calendar.HOUR_OF_DAY, 0);

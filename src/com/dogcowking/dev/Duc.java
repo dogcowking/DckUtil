@@ -546,17 +546,6 @@ public class Duc {
 	
 
 	
-	
-	/**
-	 * 
-	 * @param e
-	 * @return
-	 */
-	public static String exceptInfoSimple(Exception e) {
-		return e.getClass().getSimpleName() + "/"+e.getMessage();
-	}
-
-
 	/**
 	 * Exception을 String으로 변환
 	 * @param t

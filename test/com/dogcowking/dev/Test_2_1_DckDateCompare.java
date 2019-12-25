@@ -27,7 +27,7 @@ public class Test_2_1_DckDateCompare {
 
 	
 	/**
-	 * 정규표현식 의한 날짜 파싱
+	 * 날짜표현식 의한 날짜 파싱
 	 * @throws Exception
 	 */
 	@Test

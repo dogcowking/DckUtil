@@ -118,7 +118,7 @@ public class Dus {
 			int count = 0 ;
 			if(arrStr.length < 4) { return ipAddress; } 
 			for(String s : arrStr) {
-				System.out.println(s);
+//				System.out.println(s);
 				if(count <2) {
 					rt += s+"."; 
 				} else if(count ==2 ) {
