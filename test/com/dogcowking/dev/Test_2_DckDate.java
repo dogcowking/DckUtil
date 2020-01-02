@@ -65,7 +65,7 @@ public class Test_2_DckDate {
 				, "2016.10.25 AM 10:36"
 				, "2016.10.25 PM 10:36"
 				, "2016.10.25 PM 9:36"
-				,"2016.06.21 08:50" ;
+				,"2016.06.21 08:50" 
 		};
 		
 		for(String src : as ) {
@@ -74,8 +74,8 @@ public class Test_2_DckDate {
 			Dup.ln("[extractDateString] => "  +sDate);
 			
 			try {
-				Date d = Dup.toDate(src);
-				LogUtil.info("[stringToDate] => " +d.toString());
+				Date d = Dud.toDate(src);
+				Dup.ln("[stringToDate] => " +d.toString());
 			} catch(Exception e) {
 				System.out.println("stringTODate는 패턴이 안맞으면 오류 발생");
 				//e.printStackTrace();
