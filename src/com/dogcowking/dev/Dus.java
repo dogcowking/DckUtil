@@ -710,4 +710,28 @@ public class Dus {
 
 		return sb.toString();
 	}
+	
+	/**
+	 * '{}' 를 입력된 변수 순서대로 변환함
+	 * 
+	 * ;; '{}' 와 입력 변수 개수 안맞는 경우는 무시됨 
+	 * 
+	 * ex) replaceVar("{}는 {}와 같다.", "나", "바보");
+	 * => 나는 바보와 같다 
+	 * 
+	 * 
+	 * test 3-1
+	 * 
+	 * null 입력시 null 반환
+	 * @param ori
+	 * @return
+	 */
+	public static String replaceVar(String ori, Object... vars) {
+		
+		for(Object o : vars) { 
+			ori = ori.replaceFirst("\\{\\}", o.toString()); 
+		}
+		
+		return ori;
+	}
 }
