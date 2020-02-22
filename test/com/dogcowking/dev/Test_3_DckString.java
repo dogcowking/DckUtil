@@ -27,5 +27,22 @@ public class Test_3_DckString {
 		s = Dus.replaceVar("{}는 {}와 같다", "나", "바보");
 		Dup.ln(s);
 	}
+
+	
+	class Sample {
+		int a = 10;
+		double b= 20.00;
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void t_2_toString() {
+		Sample o = new Sample();
+		String s=  Dus.toString(o);
+		
+		Dup.p(s);
+	}
 	
 }

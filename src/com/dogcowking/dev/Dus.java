@@ -2,6 +2,7 @@ package com.dogcowking.dev;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -734,4 +735,25 @@ public class Dus {
 		
 		return ori;
 	}
+	
+	
+	public static String toString(Object o) {
+		String r= o.getClass().getSimpleName() + "[";
+		Field[] fs = o.getClass().getDeclaredFields();
+		
+		for(Field f : fs) {
+			f.setAccessible(true);
+			try {
+				r +=f.getName()+":"+f.get(o);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				r +="ERR";
+			}
+			r +=", ";
+		}
+		
+		r+= "]";
+		
+		return r;
+	}
+	
 }

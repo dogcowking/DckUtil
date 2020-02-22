@@ -1,5 +1,6 @@
 package com.dogcowking.dev;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -196,4 +197,5 @@ public class Dup {
 	public static void wait(String string) {
 		wait(string, 3);
 	}
+	
 }
