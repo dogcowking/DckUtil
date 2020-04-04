@@ -43,6 +43,7 @@ public class Dud {
 			,"yyyyMMddHHmm"
 			,"yyyy.MM.dd (오전|오후) hh:mm" // 네이버 뉴스 일부 http://sports.news.naver.com/kbaseball/news/read.nhn?oid=410&aid=0000359054
 			,"yyyy-MM-dd" //170329 //test10-20-1
+			,"yyMMdd HH:mm:ss"
 	}; // 인용 가능한 패턴 모음
 	
 	
@@ -143,6 +144,9 @@ public class Dud {
 	 * @throws Exc_Dck 
 	 */
 	public static String toStr_pat(String pattern, Date date) {
+		if(date==null) {
+			return null;
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		return sdf.format(date);
 
@@ -169,7 +173,7 @@ public class Dud {
 		List<String> lst = new ArrayList<String>(Arrays.asList(asPatDate));
 		Collections.sort(lst, new Comparator<String>() {
 
-			@Override
+//			@Override // java 1.5 이하에서는 interface 에 override 붙일 수 없다 
 			public int compare(String o1, String o2) { // null 없음 가정
 				return o2.length() - o1.length();
 			}
@@ -236,7 +240,7 @@ public class Dud {
 		List<String> lst = new ArrayList<String>(Arrays.asList(asPatDate));
 		Collections.sort(lst, new Comparator<String>() {
 
-			@Override
+//			@Override //// java 1.5 이하에서는 interface 에 override 붙일 수 없다
 			public int compare(String o1, String o2) { // null 없음 가정
 				return o2.length() - o1.length();
 			}

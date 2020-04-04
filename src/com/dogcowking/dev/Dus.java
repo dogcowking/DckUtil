@@ -745,7 +745,7 @@ public class Dus {
 			f.setAccessible(true);
 			try {
 				r +=f.getName()+":"+f.get(o);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
+			} catch (Exception e) {
 				r +="ERR";
 			}
 			r +=", ";
