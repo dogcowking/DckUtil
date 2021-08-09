@@ -603,7 +603,10 @@ public class Dud {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 		return sdf.format(d);
 	}
-
+	
+	public static String toStr_yyyymm(Date d) {
+		return Dud.toYyyymm(d);
+	}
 
 	public static String to8digit(Date d) {
 		if(d==null) {
@@ -611,6 +614,10 @@ public class Dud {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		return sdf.format(d);
+	}
+	
+	public static String toStr_8(Date d) {
+		return Dud.to8digit(d);
 	}
 
 
@@ -703,6 +710,11 @@ public class Dud {
 		} catch (ParseException e) {
 			throw new Exc_Dck("패턴 오류 : " + pattern , e);
 		}
+	}
+
+
+	public static Date toDate_hyphen(String str) throws Exc_Dck {
+		return toDate_pat("yyyy-MM-dd",str);
 	}
 
 }

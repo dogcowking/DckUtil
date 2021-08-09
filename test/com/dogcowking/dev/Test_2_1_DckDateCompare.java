@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class Test_2_1_DckDateCompare {
 
 	
 	/**
-	 * 정규표현식 의한 날짜 파싱
+	 * 패턴 지정하여 날짜 파싱
 	 * @throws Exception
 	 */
 	@Test
@@ -47,11 +48,28 @@ public class Test_2_1_DckDateCompare {
 		Dup.ln(d);
 		
 		// 3 Joda time
-		DateTimeFormatter fmt = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd");
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
 		DateTime dt = DateTime.parse(str, fmt);
+		d = dt.toDate();
 		
-		Dup.ln(dt.toDate());
+		Dup.ln(d);
 		
+		// 4 // LocalDate // Test2-2 참고 
+	}
+	
+	
+	/**
+	 * yyyy-MM-dd 형태의 날짜 파싱
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void t_1_1_yyyyMMdd() throws Exception {
+		// 1 // dud
+		String str = "2019-12-15";
+		Date d;
+		
+		d= Dud.toDate_hyphen(str);
 	}
 	
 	
@@ -69,8 +87,6 @@ public class Test_2_1_DckDateCompare {
 		
 		// 3 Joda time
 		// 없음
-		
-		
 	}
 	
 	
