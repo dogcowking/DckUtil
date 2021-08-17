@@ -42,7 +42,7 @@ public class Test_2_DckDate {
 		for(String sDate : sArrDateStr)  {
 			try {
 				Dup.ln("sDate : " + sDate);
-				Dup.ln("--> "  + Dud.toDate(sDate));
+				Dup.ln("--> "  + Dud.strToDate_auto(sDate));
 				
 			} catch (Exc_Dck e) {
 				e.printStackTrace();
@@ -74,7 +74,7 @@ public class Test_2_DckDate {
 			Dup.ln("[extractDateString] => "  +sDate);
 			
 			try {
-				Date d = Dud.toDate(src);
+				Date d = Dud.strToDate_auto(src);
 				Dup.ln("[stringToDate] => " +d.toString());
 			} catch(Exception e) {
 				System.out.println("stringTODate는 패턴이 안맞으면 오류 발생");

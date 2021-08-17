@@ -37,7 +37,7 @@ public class Test_2_1_DckDateCompare {
 		Date d;
 		
 		// 1. Dud
-		d = Dud.toDate_pat("yyyy-MM-dd", str);
+		d = Dud.toDate_ptrn("yyyy-MM-dd", str);
 		
 		Dup.ln(d);
 		
@@ -79,7 +79,7 @@ public class Test_2_1_DckDateCompare {
 		Date d;
 		
 		// 1. Dud
-		d = Dud.toDate(str);
+		d = Dud.strToDate_auto(str);
 		Dup.ln(d);
 		
 		// 2. 일반 코드

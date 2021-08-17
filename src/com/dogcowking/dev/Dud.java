@@ -46,171 +46,8 @@ public class Dud {
 	}; // 인용 가능한 패턴 모음
 	
 	
+	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식	// 0. 자동 인식
 
-	// 1. 날짜 -> String  	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String
-	
-
-	/**
-	 *  년월일 시:분 까지 반환
-	 * 
-	 * yyMMdd HH:mm
-	 * 
-	 * @param d 
-	 * @return
-	 */
-	public static String toStr_mm(Date d) {
-		if(d == null ) return null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd HH:mm");
-		return sdf.format(d);
-	}
-
-
-	/**
-	 * 
-	 * t 502-3
-	 * @param 오늘 작성 : 시:분만 표시<br/>
-	 * 그 이전에 작성 : 190101 23:22 형태로 표시
-	 * @return
-	 */
-	public  static String toStr_bbs(Date d) {
-		Date dNow = new Date();
-		
-		SimpleDateFormat sdfNow = new SimpleDateFormat("YYMMDD");
-		String s1 = sdfNow.format(dNow);
-		
-//		SimpleDateFormat sd = new SimpleDateFormat("YYMMDD");
-		String s2 = sdfNow.format(d);
-		
-		if(s1.equals(s2)) {
-			return new SimpleDateFormat("HH:mm").format(d);
-		}  else {
-			return new SimpleDateFormat("yyMMdd HH:mm").format(d);
-		}
-	}
-	
-
-	
-	/**
-	 * t 502-3
-	 * 
-	 * @param date
-	 * @return 몇초전, 몇시간전 , 몇년전 .. .
-	 */
-	public static String toStr_bbs_2(Date date) { 
-		final int SEC = 60;
-		final int MIN = 60;
-		final int HOUR = 24;
-		final int DAY = 30;
-		final int MONTH = 12;
-
-		long curTime = System.currentTimeMillis();
-		long regTime = date.getTime();
-		long diffTime = (curTime - regTime) / 1000;
-
-		String msg = null;
-
-		if(diffTime < SEC) {
-			// sec
-			msg = diffTime + "초전";
-		} else if ((diffTime /= SEC) < MIN) {
-			// min
-//			System.out.println(diffTime);
-			msg = diffTime + "분전";
-		} else if ((diffTime /= MIN) < HOUR) {
-			// hour
-			msg = (diffTime ) + "시간전";
-		} else if ((diffTime /= HOUR) < DAY) {
-			// day
-			msg = (diffTime ) + "일전";
-		} else if ((diffTime /= DAY) < MONTH) {
-			// day
-			msg = (diffTime ) + "달전";
-		} else {
-			msg = (diffTime) + "년전";
-		}
-
-
-		return msg;
-	}
-	
-	/**
-	 * TODO 패턴 잘못된 경우 처리 필요
-	 * 
-	 * 
-	 * @param pattern
-	 * @param str
-	 * @return
-	 * @throws Exc_Dck 
-	 */
-	public static String toStr_pat(String pattern, Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		return sdf.format(date);
-
-	}
-
-	/**
-	 * * 주의 stringToDate 와 달리 "추출"에 의의가 있음. 
-	 * *170311 정렬해놓고 안쓰던 오류 수정
-	 * 
-	 * 날짜 문자열이 섞여 있는 것에서 날짜 문자열만 추출
-	 * ex ) 딤딤이 161210 --> 161210   
-	 * @param str
-	 * @return
-	 * @throws Exc_Dck 
-	 */
-	public static String extractDateString(String str) throws Exc_Dck { 
-		
-		// AM PM =>  오전,오후
-		str = str.replace("AM","오전");
-		str = str.replace("PM","오후");
-		
-
-		// 1. 긴 패턴부터 적용하기 위한 정렬 ( 짧은 패턴이 긴 패턴에 포함되는 경우 있으므로...)
-		List<String> lst = new ArrayList<String>(Arrays.asList(asPatDate));
-		Collections.sort(lst, new Comparator<String>() {
-
-			@Override
-			public int compare(String o1, String o2) { // null 없음 가정
-				return o2.length() - o1.length();
-			}
-		});
-		
-		for(String sPat : lst) {
-
-			// 2. 각 패턴 규칙 맞는지 확인
-			String sDatePattern_regex = sPat.replaceAll("y","\\\\d").replaceAll("MM|dd|hh|HH|mm|ss","\\\\d\\\\d?");
-			Matcher mat = Pattern.compile(sDatePattern_regex).matcher(str);
-			
-			boolean m = mat.find();
-			String extractedString = null;
-			
-			if(m == false) {
-				continue;
-			}
-			
-			extractedString = mat.group();
-			
-			// 3. 추출된 문자열로 실제로 Date() 생성 테스트 후 반환
-			String sDatePat = sPat.replace("(오전|오후)","a");
-			SimpleDateFormat sdf = new SimpleDateFormat(sDatePat);
-			
-			try { 
-				sdf.parse(extractedString);
-				return extractedString;// 추출하여 반환함.
-			} catch(ParseException e) { // 오류발생시도 다음 패턴 처리를 위해 넘김 
-				//e.printStackTrace();
-				// 2016.10.23 은 'yyyy.mm.dd.' 에서 한번 잡혔따가 오류 발생하고 ,
-				//  적당한 'yyyy.mm.dd'를 다시 적용함 
-				continue; 
-			}
-		}
-		
-		// 4. 아무것도 찾지 못했다면 Exception 으로 반환함.
-		throw new  Exc_Dck("not found acceptable Date String In paramter string. '"+str+"'");
-		
-	}
-
-	
 	/**
 	 * * extractDateString() 과 연계해서 쓰일 때가 있어 둘 간의 패턴 맞춰야..
 	 * test  5-36, 5-38
@@ -225,7 +62,7 @@ public class Dud {
 	 * @return
 	 * @throws Exc_Dck 
 	 */
-	public static Date toDate(String str) throws Exc_Dck {
+	public static Date strToDate_auto(String str) throws Exc_Dck {
 		if(str == null || str.trim().equals("")) return null;
 		
 		str = str.trim();
@@ -275,54 +112,196 @@ public class Dud {
 	}
 	
 	
+	/**
+	 * * 주의 stringToDate 와 달리 "추출"에 의의가 있음. 
+	 * *170311 정렬해놓고 안쓰던 오류 수정
+	 * 
+	 * 날짜 문자열이 섞여 있는 것에서 날짜 문자열만 추출
+	 * ex ) 딤딤이 161210 --> 161210   
+	 * @param str
+	 * @return
+	 * @throws Exc_Dck 
+	 */
+	public static String extractDateString(String str) throws Exc_Dck { 
+		// AM PM =>  오전,오후
+		str = str.replace("AM","오전");
+		str = str.replace("PM","오후");
+		
+
+		// 1. 긴 패턴부터 적용하기 위한 정렬 ( 짧은 패턴이 긴 패턴에 포함되는 경우 있으므로...)
+		List<String> lst = new ArrayList<String>(Arrays.asList(asPatDate));
+		Collections.sort(lst, new Comparator<String>() {
+
+			@Override
+			public int compare(String o1, String o2) { // null 없음 가정
+				return o2.length() - o1.length();
+			}
+		});
+		
+		for(String sPat : lst) {
+
+			// 2. 각 패턴 규칙 맞는지 확인
+			String sDatePattern_regex = sPat.replaceAll("y","\\\\d").replaceAll("MM|dd|hh|HH|mm|ss","\\\\d\\\\d?");
+			Matcher mat = Pattern.compile(sDatePattern_regex).matcher(str);
+			
+			boolean m = mat.find();
+			String extractedString = null;
+			
+			if(m == false) {
+				continue;
+			}
+			
+			extractedString = mat.group();
+			
+			// 3. 추출된 문자열로 실제로 Date() 생성 테스트 후 반환
+			String sDatePat = sPat.replace("(오전|오후)","a");
+			SimpleDateFormat sdf = new SimpleDateFormat(sDatePat);
+			
+			try { 
+				sdf.parse(extractedString);
+				return extractedString;// 추출하여 반환함.
+			} catch(ParseException e) { // 오류발생시도 다음 패턴 처리를 위해 넘김 
+				//e.printStackTrace();
+				// 2016.10.23 은 'yyyy.mm.dd.' 에서 한번 잡혔따가 오류 발생하고 ,
+				//  적당한 'yyyy.mm.dd'를 다시 적용함 
+				continue; 
+			}
+		}
+		
+		// 4. 아무것도 찾지 못했다면 Exception 으로 반환함.
+		throw new  Exc_Dck("not found acceptable Date String In paramter string. '"+str+"'");
+		
+	}
 	
+	// 1. 날짜 -> String  	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String	// 1. 날짜 -> String
+
+	/**
+	 * TODO 패턴 잘못된 경우 처리 필요
+	 * @param pattern
+	 * @param str
+	 * @return
+	 * @throws Exc_Dck 
+	 */
+	public static String toStr_ptrn(String pattern, Date date) {
+		if(date == null) {
+			return null;
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		return sdf.format(date);
+
+	}
+
+	/**
+	 *  년월일 시:분 까지 반환
+	 * 
+	 * yyMMdd HH:mm
+	 * 
+	 * @param d 
+	 * @return
+	 */
+	public static String toStr_mm(Date d) {
+		return toStr_ptrn("yyMMdd HH:mm", d);
+	}
+
+
+	/**
+	 * 
+	 * t 502-3
+	 * @param 오늘 작성 : 시:분만 표시<br/>
+	 * 그 이전에 작성 : 190101 23:22 형태로 표시
+	 * @return
+	 */
+	public  static String toStr_bbs(Date d) {
+		Date dNow = new Date();
+		
+		SimpleDateFormat sdfNow = new SimpleDateFormat("YYMMDD");
+		String s1 = sdfNow.format(dNow);
+		
+//		SimpleDateFormat sd = new SimpleDateFormat("YYMMDD");
+		String s2 = sdfNow.format(d);
+		
+		if(s1.equals(s2)) {
+			return new SimpleDateFormat("HH:mm").format(d);
+		}  else {
+			return new SimpleDateFormat("yyMMdd HH:mm").format(d);
+		}
+	}
+	
+	/**
+	 * t 502-3
+	 * 
+	 * @param date
+	 * @return 몇초전, 몇시간전 , 몇년전 .. .
+	 */
+	public static String toStr_bbs_2(Date date) { 
+		final int SEC = 60;
+		final int MIN = 60;
+		final int HOUR = 24;
+		final int DAY = 30;
+		final int MONTH = 12;
+
+		long curTime = System.currentTimeMillis();
+		long regTime = date.getTime();
+		long diffTime = (curTime - regTime) / 1000;
+
+		String msg = null;
+
+		if(diffTime < SEC) {
+			// sec
+			msg = diffTime + "초전";
+		} else if ((diffTime /= SEC) < MIN) {
+			// min
+//			System.out.println(diffTime);
+			msg = diffTime + "분전";
+		} else if ((diffTime /= MIN) < HOUR) {
+			// hour
+			msg = (diffTime ) + "시간전";
+		} else if ((diffTime /= HOUR) < DAY) {
+			// day
+			msg = (diffTime ) + "일전";
+		} else if ((diffTime /= DAY) < MONTH) {
+			// day
+			msg = (diffTime ) + "달전";
+		} else {
+			msg = (diffTime) + "년전";
+		}
+
+
+		return msg;
+	}
+
 	/**
 	 * yyMMddHHmmss 로 반환
 	 * @param d
 	 * @return
 	 */
 	public static String toStr_yyMMddHHmmss(Date d) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
-		return sdf.format(d);
+		return toStr_ptrn("yyMMddHHmmss", d);
 	}
 
 
 
 	/**
-	 * null 일때 "(DATE NULL)" 반환
+	 * null 일때 null 반환
 	 * @param d
 	 * @return
 	 */
 	public static String toStr_yyMMdd(Date d ) {
-		if(d==null) {
-			return "(DATE NULL)";
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
-		return sdf.format(d);
+		return toStr_ptrn("yyMMdd", d);
 	}
 	
-	
-/**
- * 
- * @param date
- * @return
- */
-	public static String toStr_hyphen(Date date) {
-		return toStr_pat("yyyy-MM-dd", date);
+	public static String toStr_yyMMdd_today() {
+		return toStr_yyMMdd(new Date());
 	}
 	
 	/**
 	 * 
-	 *   null 일때 null 반환
-	 * @param ciCreateDate
+	 * @param date
 	 * @return
 	 */
-	public static String toStr_yymmdd_2(Date d) {
-		if(d==null) {
-			return null;
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMMdd");
-		return sdf.format(d);
+	public static String toStr_hyphen(Date date) {
+		return toStr_ptrn("yyyy-MM-dd", date);
 	}
 	
 	
@@ -331,25 +310,38 @@ public class Dud {
 	 * @return
 	 */
 	public static String toStr_yymm(Date d) {
-		if(d==null) {
-			return null;
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
-		return sdf.format(d);
+		return toStr_ptrn("yyMM", d);
 	}
 	
 	
-
-	public static String today_2_6digit() {
-		return toStr_yyMMdd(new Date());
-	}
 	
 	public static String toStr_bbs3(Date d) {
-		return toStr_pat("yyMMdd HH:mm:ss", d);
+		return toStr_ptrn("yyMMdd HH:mm:ss", d);
 	}
 	
 
-	
+
+	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate	// 1-1 toDate
+	/**
+	 * 
+	 * @param pattern
+	 * @param date
+	 * @return
+	 */
+	public static Date toDate_ptrn(String pattern, String str) throws Exc_Dck {
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+		try {
+			return sdf.parse(str);
+		} catch (ParseException e) {
+			throw new Exc_Dck("패턴 오류 : " + pattern , e);
+		}
+	}
+
+
+	public static Date toDate_hyphen(String str) throws Exc_Dck {
+		return toDate_ptrn("yyyy-MM-dd",str);
+	}
 	
 	// 2. 날짜 조정  	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정
 
@@ -380,6 +372,26 @@ public class Dud {
 		return c.getTime();
 	}
 	
+	public static Date addDay_tomorrow() {
+		return addDay(new Date(), +1);
+	}
+
+	/**
+	 * 입력날짜의 다음날을 반환
+	 * 
+	 * 날짜 인식은 auto 사용
+	 * @param s
+	 * @return
+	 * @throws Exc_Dck
+	 */
+	public static Date addDay_tomorrow(String sDate) throws Exc_Dck  {
+		return addDay(strToDate_auto(sDate),1);
+	}
+	
+	public static Date addDay_yesterday() {
+		return addDay(new Date(), -1);
+	}
+	
 	public static Date addMonth(Date d, int i) {
 		if(d == null) return null;
 		
@@ -392,14 +404,6 @@ public class Dud {
 	}
 	
 
-	public static Date toTomorrow() {
-		return addDay(new Date(), +1);
-	}
-
-	public static Date toYesterday() {
-		return addDay(new Date(), -1);
-	}
-	
 	
 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 
 	
@@ -418,7 +422,7 @@ public class Dud {
 	 * @return
 	 */
 	public static Date getMorePast(Date a, Date b) { 
-		if(a ==null)  return b;
+		if(a == null)  return b;
 		if(b == null) return a;
 		return a.compareTo(b) > 0 ? b:a;
 	}
@@ -449,29 +453,30 @@ public class Dud {
 	/**
 	 * * 날짜 구간에 들어오는지 확인
 	 * 
-	 * bDate <= date < eDate 일때 true
+	 * dBegin <= dTarget < dEnd 일때 true
 	 * 
-	 * * bDate, eDate 바뀌었을때에 대한 처리 없음.
-	 * 
-	 * * bDate or eDate 있는데 date nul  일땐 false (날짜조건 있는데, 검사 대상 없는경우..)
+	 * 1. dBegin, dEnd 바뀌었을때에 대한 처리 없음.
+	 * 2. dBegin 또는 dEnd 중 하나만 있어도 사용 가능.
+	 * 3. dBegin or dEnd있는데 date nul  일땐 false (날짜조건 있는데, 검사 대상 없는경우..)
 	 * 
 	 * 
 	 * * test 8-8
 	 * 
+	 * 210817 '3' 의 논리 재확인
 	 * 170621
-	 * @param bDate
-	 * @param eDate
-	 * @param date
+	 * @param dBegin
+	 * @param dEnd
+	 * @param dTarget
 	 * @return
 	 */
-	public static boolean dateAccept(Date bDate, Date eDate, Date date) {
+	public static boolean dateAccept(Date dBegin, Date dEnd, Date dTarget) {
 		boolean rt = true;
 		
-		if(bDate != null && (date==null ||  bDate.compareTo(date) > 0 )) { 
+		if(dBegin != null && (dTarget==null ||  dBegin.compareTo(dTarget) > 0 )) { 
 			rt = false;
 		}
 		
-		if(eDate != null && (date==null ||eDate.compareTo(date) <= 0) ) {
+		if(dEnd != null && (dTarget==null ||dEnd.compareTo(dTarget) <= 0) ) {
 			rt = false;
 		}
 		
@@ -545,20 +550,14 @@ public class Dud {
 	}
 	
 
-
 	/**
-	 * 위 명령의 약어
-	 * @param s
+	 * 
+	 * @param yearMonth
 	 * @return
 	 * @throws Exc_Dck
 	 */
-	public static Date toTomorrow(String s) throws Exc_Dck  {
-		return addDay(toDate(s),1);
-	}
-	
-
 	public static int lastDayOfMonth(String yearMonth) throws Exc_Dck {
-		Date d = toDate(yearMonth+"01");
+		Date d = strToDate_auto(yearMonth+"01");
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
 		return c.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -577,19 +576,9 @@ public class Dud {
 	 * @throws Exc_Dck 
 	 */
 	public static String addDay(String sDt, int i) throws Exc_Dck {
-		return toStr_yymmdd_2(addDay(toDate(sDt), i));
+		return toStr_yyMMdd(addDay(strToDate_auto(sDt), i));
 	}
 
-	
-
-	public static String toYymmdd(Date d) {
-		return toStr_yymmdd_2(d);
-	}
-
-
-	public static String toYymmdd() {
-		return toYymmdd(new Date());
-	}
 	
 	/**
 	 * 
@@ -608,7 +597,7 @@ public class Dud {
 		return Dud.toYyyymm(d);
 	}
 
-	public static String to8digit(Date d) {
+	public static String toStr_yyyyMMdd(Date d) {
 		if(d==null) {
 			return null;
 		}
@@ -616,9 +605,6 @@ public class Dud {
 		return sdf.format(d);
 	}
 	
-	public static String toStr_8(Date d) {
-		return Dud.to8digit(d);
-	}
 
 
 	/**
@@ -639,14 +625,12 @@ public class Dud {
 		if(d1 == null || d2 == null) { 
 			return false;
 		}
-
-
 		return d1.getTime() == d2.getTime();
 	}
 	
 
 	public static String date6ToDate8(String date6) throws Exc_Dck {
-		return to8digit(toDate(date6));
+		return toStr_yyyyMMdd(strToDate_auto(date6));
 	}	
 	
 
@@ -694,27 +678,5 @@ public class Dud {
 		return c.getTime(); 
 	}
 
-
-
-	/**
-	 * 
-	 * @param pattern
-	 * @param date
-	 * @return
-	 */
-	public static Date toDate_pat(String pattern, String str) throws Exc_Dck {
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-
-		try {
-			return sdf.parse(str);
-		} catch (ParseException e) {
-			throw new Exc_Dck("패턴 오류 : " + pattern , e);
-		}
-	}
-
-
-	public static Date toDate_hyphen(String str) throws Exc_Dck {
-		return toDate_pat("yyyy-MM-dd",str);
-	}
 
 }

@@ -15,7 +15,7 @@ public class Dud2 {
 	}
 	
 	public static Dud2 fromStr_pat(String pattern, String str) throws Exc_Dck {
-		Date d= Dud.toDate_pat(pattern, str);
+		Date d= Dud.toDate_ptrn(pattern, str);
 		
 		Dud2 r = new Dud2();
 		r.date = d;
@@ -27,24 +27,23 @@ public class Dud2 {
 	}
 	
 	public String toStr(String pattern) {
-		return null;
+		return Dud.toStr_ptrn(pattern, this.date);
 	}
 	
 	public Dud2 addDay(int i) {
 		return this;
 	}
 	
-	
-	public String toStr_8() {
-		return null;
+	public String toStr_yyyyMMdd() {
+		return Dud.toStr_yyyyMMdd(date);
 	}
 	
-	public String toStr_6() {
-		return null;
+	public String toStr_yyMMdd() {
+		return Dud.toStr_yyMMdd(this.date);
 	}
 	
-	public String toStr_pat() { 
-		return null;
+	public String toStr_ptrn(String sPattern) { 
+		return Dud.toStr_ptrn(sPattern, this.date);
 	}
 	
 }
