@@ -10,7 +10,6 @@ public class Dud2 {
 		Dud2 r = new Dud2();
 		r.date = new Date();
 		
-		LocalDateTime ldt;
 		return r;
 	}
 	
