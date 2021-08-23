@@ -343,6 +343,11 @@ public class Dud {
 		return toDate_ptrn("yyyy-MM-dd",str);
 	}
 	
+
+	public static Date toDate_yyyyMMdd(String str) throws Exc_Dck {
+		return toDate_ptrn("yyyyMMdd",str);
+	}
+	
 	// 2. 날짜 조정  	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정	// 2. 날짜 조정
 
 	
@@ -404,7 +409,17 @@ public class Dud {
 	}
 	
 
-	
+	public static Date addYear(Date d, int i) {
+		if(d == null) return null;
+		
+		Calendar c = Calendar.getInstance();
+		
+		c.setTime(d);
+		c.add(Calendar.YEAR, i);
+		
+		return c.getTime();
+	}
+
 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 	// 날짜 비교 
 	
 	/**
@@ -578,23 +593,24 @@ public class Dud {
 	public static String addDay(String sDt, int i) throws Exc_Dck {
 		return toStr_yyMMdd(addDay(strToDate_auto(sDt), i));
 	}
-
+	
 	
 	/**
 	 * 
 	 * @param d
 	 * @return
 	 */
+	@Deprecated 
 	public static String toYyyymm(Date d) {
+		return toStr_yyyymm(d);
+	}
+	
+	public static String toStr_yyyymm(Date d) {
 		if(d==null) {
 			return null;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
 		return sdf.format(d);
-	}
-	
-	public static String toStr_yyyymm(Date d) {
-		return Dud.toYyyymm(d);
 	}
 
 	public static String toStr_yyyyMMdd(Date d) {
@@ -677,6 +693,7 @@ public class Dud {
 		
 		return c.getTime(); 
 	}
+
 
 
 }
